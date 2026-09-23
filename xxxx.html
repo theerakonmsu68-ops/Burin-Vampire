@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Burin Vampire</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- ==================================================
+         CANVAS
+    ================================================== -->
+
+    <canvas id="gameCanvas"></canvas>
+
+
+    <!-- ==================================================
+         TOP HUD
+    ================================================== -->
+
+    <div class="top-hud">
+
+        <div class="game-name">
+
+            <div class="game-name-line"></div>
+
+            <div>
+
+                <div class="game-name-main">
+                    BURIN
+                </div>
+
+                <div class="game-name-sub">
+                    VAMPIRE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="game-ui">
+
+            <div class="score-hud">
+
+                <span class="score-title">
+                    SCORE
+                </span>
+
+                <span
+                    id="score-text"
+                    class="score-value"
+                >
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         FPS
+    ================================================== -->
+
+    <div id="fps-ui">
+
+        <span id="fps-text">
+            FPS: 0
+        </span>
+
+    </div>
+
+
+    <!-- ==================================================
+         PAUSE
+    ================================================== -->
+
+    <button
+        id="pause-button"
+        type="button"
+    >
+        หยุดเกม
+    </button>
+
+
+    <!-- ==================================================
+         EXP
+    ================================================== -->
+
+    <div id="exp-ui">
+
+        <div class="bottom-hud">
+
+            <div class="level-block">
+
+                <div class="level-decoration">
+
+                    <span></span>
+
+                    <i></i>
+
+                    <span></span>
+
+                </div>
+
+                <div
+                    id="level-text"
+                    class="level-text"
+                >
+                    LV. 1
+                </div>
+
+            </div>
+
+
+            <div class="exp-block">
+
+                <div class="exp-top">
+
+                    <span class="exp-title">
+                        EXPERIENCE
+                    </span>
+
+                    <span
+                        id="exp-percent-text"
+                        class="exp-percent"
+                    >
+                        EXP: 0.0%
+                    </span>
+
+                </div>
+
+
+                <div class="exp-frame">
+
+                    <div
+                        id="exp-bar"
+                        class="exp-bar"
+                        style="width:0%;"
+                    >
+
+                        <div class="exp-highlight"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         GAME ALERT
+    ================================================== -->
+
+    <div
+        id="game-alert"
+        class="start"
+    >
+
+        <div class="game-alert-box">
+
+            <div class="game-alert-line"></div>
+
+            <div
+                id="game-alert-title"
+                class="game-alert-title"
+            >
+                BURIN VAMPIRE
+            </div>
+
+            <div class="game-alert-divider"></div>
+
+            <div
+                id="game-alert-message"
+                class="game-alert-message"
+            >
+                ยินดีต้อนรับสู่ดินแดนรัตติกาล
+            </div>
+
+            <button
+                id="game-alert-button"
+                class="game-alert-button"
+                type="button"
+            >
+                เริ่มเกม
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         ORIENTATION
+    ================================================== -->
+
+    <div id="orientation-warning">
+
+        <div class="warning-decoration top"></div>
+
+        <div class="warning-content">
+
+            <div class="warning-symbol">
+
+                <div class="warning-phone"></div>
+
+            </div>
+
+            <div class="warning-small">
+                BURIN VAMPIRE
+            </div>
+
+            <h2>
+                กรุณาถือมือถือแนวตั้ง
+            </h2>
+
+            <p>
+                ดินแดนรัตติกาลรองรับการเล่นในแนวตั้งเท่านั้น
+            </p>
+
+            <div class="rotate-device">
+                ROTATE DEVICE
+            </div>
+
+        </div>
+
+        <div class="warning-decoration bottom"></div>
+
+    </div>
+
+
+    <!-- ==================================================
+         GAME STATE
+    ================================================== -->
+
+    <script>
+
+        // ==================================================
+        // GAME STATE
+        // ==================================================
+
+        let gameStarted = false;
+
+        let gamePaused = true;
+
+        let gameOverState = false;
+
+
+        // ==================================================
+        // ELEMENTS
+        // ==================================================
+
+        const pauseButton =
+            document.getElementById(
+                "pause-button"
+            );
+
+        const gameAlert =
+            document.getElementById(
+                "game-alert"
+            );
+
+        const gameAlertTitle =
+            document.getElementById(
+                "game-alert-title"
+            );
+
+        const gameAlertMessage =
+            document.getElementById(
+                "game-alert-message"
+            );
+
+        const gameAlertButton =
+            document.getElementById(
+                "game-alert-button"
+            );
+
+
+        // ==================================================
+        // SHOW GAME ALERT
+        // ==================================================
+
+        function showGameAlert(
+            title,
+            message,
+            type = "start"
+        ) {
+
+            gameAlert.className = "";
+
+            gameAlert.classList.add(
+                "show",
+                type
+            );
+
+            gameAlertTitle.textContent =
+                title;
+
+            gameAlertMessage.textContent =
+                message;
+
+            if (
+                type === "death"
+            ) {
+
+                gameAlertButton.textContent =
+                    "เริ่มเกมใหม่";
+
+            } else {
+
+                gameAlertButton.textContent =
+                    "เริ่มเกม";
+
+            }
+
+        }
+
+
+        // ==================================================
+        // HIDE GAME ALERT
+        // ==================================================
+
+        function hideGameAlert() {
+
+            gameAlert.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        // ==================================================
+        // START GAME
+        // ==================================================
+
+        function startGame() {
+
+            gameStarted = true;
+
+            gamePaused = false;
+
+            gameOverState = false;
+
+            pauseButton.textContent =
+                "หยุดเกม";
+
+            pauseButton.classList.remove(
+                "paused"
+            );
+
+            hideGameAlert();
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "gameStart"
+                )
+            );
+
+        }
+
+
+        // ==================================================
+        // PAUSE GAME
+        // ==================================================
+
+        function pauseGame() {
+
+            if (!gameStarted) {
+                return;
+            }
+
+            if (gameOverState) {
+                return;
+            }
+
+            if (gamePaused) {
+                return;
+            }
+
+            gamePaused = true;
+
+            pauseButton.textContent =
+                "เล่นต่อ";
+
+            pauseButton.classList.add(
+                "paused"
+            );
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "gamePause"
+                )
+            );
+
+        }
+
+
+        // ==================================================
+        // RESUME GAME
+        // ==================================================
+
+        function resumeGame() {
+
+            if (!gameStarted) {
+                return;
+            }
+
+            if (gameOverState) {
+                return;
+            }
+
+            if (!gamePaused) {
+                return;
+            }
+
+            gamePaused = false;
+
+            pauseButton.textContent =
+                "หยุดเกม";
+
+            pauseButton.classList.remove(
+                "paused"
+            );
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "gameResume"
+                )
+            );
+
+        }
+
+
+        // ==================================================
+        // PAUSE BUTTON
+        // ==================================================
+
+        pauseButton.addEventListener(
+            "click",
+            function () {
+
+                if (!gameStarted) {
+                    return;
+                }
+
+                if (gameOverState) {
+                    return;
+                }
+
+                if (gamePaused) {
+
+                    resumeGame();
+
+                } else {
+
+                    pauseGame();
+
+                }
+
+            }
+        );
+
+
+        // ==================================================
+        // START / RESTART BUTTON
+        // ==================================================
+
+        gameAlertButton.addEventListener(
+            "click",
+            function () {
+
+                // Game Over
+                if (gameOverState) {
+
+                    location.reload();
+
+                    return;
+
+                }
+
+                // Start
+                startGame();
+
+            }
+        );
+
+
+        // ==================================================
+        // PLAYER DIED
+        // movement.js จะเรียกฟังก์ชันนี้
+        // ==================================================
+
+        window.gamePlayerDied =
+            function () {
+
+                if (gameOverState) {
+                    return;
+                }
+
+                gameOverState = true;
+
+                gameStarted = false;
+
+                gamePaused = true;
+
+
+                // ------------------------------------------
+                // Pause Button
+                // ------------------------------------------
+
+                pauseButton.textContent =
+                    "GAME OVER";
+
+                pauseButton.classList.add(
+                    "paused"
+                );
+
+
+                // ------------------------------------------
+                // แจ้ง movement.js / ระบบอื่น
+                // ------------------------------------------
+
+                window.dispatchEvent(
+                    new CustomEvent(
+                        "gamePause"
+                    )
+                );
+
+
+                // ------------------------------------------
+                // Get Score
+                // ------------------------------------------
+
+                const scoreElement =
+                    document.getElementById(
+                        "score-text"
+                    );
+
+                const score =
+                    scoreElement
+                        ? scoreElement.textContent
+                        : "0";
+
+
+                // ------------------------------------------
+                // Show Game Over
+                // ------------------------------------------
+
+                showGameAlert(
+
+                    "GAME OVER",
+
+                    "การเดินทางของคุณสิ้นสุดลง  •  SCORE " +
+                    score,
+
+                    "death"
+
+                );
+
+            };
+
+
+        // ==================================================
+        // GAME PAUSE EVENT
+        // ==================================================
+
+        window.addEventListener(
+            "gamePause",
+            function () {
+
+                gamePaused = true;
+
+            }
+        );
+
+
+        // ==================================================
+        // GAME RESUME EVENT
+        // ==================================================
+
+        window.addEventListener(
+            "gameResume",
+            function () {
+
+                if (gameOverState) {
+                    return;
+                }
+
+                if (!gameStarted) {
+                    return;
+                }
+
+                gamePaused = false;
+
+            }
+        );
+
+
+        // ==================================================
+        // GAME START EVENT
+        // ==================================================
+
+        window.addEventListener(
+            "gameStart",
+            function () {
+
+                gameStarted = true;
+
+                gamePaused = false;
+
+                gameOverState = false;
+
+            }
+        );
+
+
+        // ==================================================
+        // KEYBOARD
+        // SPACE / P
+        // ==================================================
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.code === "Space" ||
+                    event.key.toLowerCase() === "p"
+                ) {
+
+                    event.preventDefault();
+
+                    if (!gameStarted) {
+                        return;
+                    }
+
+                    if (gameOverState) {
+                        return;
+                    }
+
+                    if (gamePaused) {
+
+                        resumeGame();
+
+                    } else {
+
+                        pauseGame();
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        // ==================================================
+        // FIRST LOAD
+        // ==================================================
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                setTimeout(
+                    function () {
+
+                        showGameAlert(
+
+                            "BURIN VAMPIRE",
+
+                            "เอาชีวิตรอดในดินแดนรัตติกาล กำจัดศัตรูและรวบรวมพลังให้ได้มากที่สุด",
+
+                            "start"
+
+                        );
+
+                    },
+                    300
+                );
+
+            }
+        );
+
+    </script>
+
+
+    <!-- ==================================================
+         MOVEMENT
+    ================================================== -->
+
+    <script src="js/movement.js"></script>
+
+</body>
+
+</html>
