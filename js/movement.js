@@ -87,9 +87,9 @@ const player = {
     x: 0,
     y: 0,
 
-    displaySize: 120,
+    displaySize: 70,
 
-    maxSpeed: 320,
+    maxSpeed: 280,
 
     velocityX: 0,
     velocityY: 0,
