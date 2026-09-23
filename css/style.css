@@ -1,0 +1,1737 @@
+/* =========================================================
+   BURIN VAMPIRE
+   PREMIUM DARK VAMPIRE UI
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #171315 0%,
+            #0c0b0d 45%,
+            #060607 100%
+        );
+
+    font-family: "Sarabun", sans-serif;
+
+    color: #d8d0d0;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    touch-action: none;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    position: relative;
+}
+
+
+/* =========================================================
+   GLOBAL ATMOSPHERE
+========================================================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            transparent 45%,
+            rgba(0, 0, 0, .22) 72%,
+            rgba(0, 0, 0, .58) 100%
+        );
+
+    mix-blend-mode: multiply;
+}
+
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 6;
+
+    pointer-events: none;
+
+    opacity: .035;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.4) 1px,
+            transparent 1px
+        );
+
+    background-size: 100% 4px;
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#gameCanvas {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    background: #09090a;
+
+    image-rendering: auto;
+}
+
+
+/* =========================================================
+   TOP HUD
+========================================================= */
+
+.top-hud {
+    position: fixed;
+
+    top: 18px;
+    left: 20px;
+    right: 20px;
+
+    z-index: 100;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    pointer-events: none;
+
+    animation: hudAppear .7s ease both;
+}
+
+
+/* =========================================================
+   GAME LOGO
+========================================================= */
+
+.game-name {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 7px 13px 8px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(10,9,10,.82),
+            rgba(10,9,10,.18),
+            transparent
+        );
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+
+.game-name-line {
+    position: relative;
+
+    width: 3px;
+    height: 48px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a72b38,
+            #641820,
+            #a72b38
+        );
+
+    box-shadow:
+        0 0 10px rgba(160,35,48,.45);
+}
+
+
+.game-name-line::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -3px;
+
+    width: 9px;
+    height: 1px;
+
+    background: #bd3948;
+}
+
+
+.game-name-line::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: -3px;
+
+    width: 9px;
+    height: 1px;
+
+    background: #bd3948;
+}
+
+
+.game-name-main {
+    font-size: 25px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: 5px;
+
+    color: #eee7e7;
+
+    text-shadow:
+        0 0 12px rgba(255,255,255,.08);
+}
+
+
+.game-name-sub {
+    margin-top: 6px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    letter-spacing: 5px;
+
+    color: #857b7d;
+}
+
+
+/* =========================================================
+   SCORE
+========================================================= */
+
+.score-hud {
+    position: relative;
+
+    min-width: 112px;
+
+    padding: 8px 14px 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(24,21,23,.94),
+            rgba(8,8,9,.82)
+        );
+
+    border-top: 1px solid rgba(117,105,108,.38);
+
+    border-left: 1px solid rgba(117,105,108,.42);
+
+    border-bottom: 1px solid rgba(117,105,108,.2);
+
+    box-shadow:
+        -8px 8px 25px rgba(0,0,0,.25);
+
+    text-align: right;
+
+    overflow: hidden;
+}
+
+
+.score-hud::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 34px;
+    height: 1px;
+
+    background: #8d2934;
+
+    box-shadow:
+        0 0 10px rgba(141,41,52,.7);
+}
+
+
+.score-hud::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 20px;
+    height: 1px;
+
+    background: #5a1e26;
+}
+
+
+.score-title {
+    display: block;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: #756c6e;
+}
+
+
+.score-value {
+    display: block;
+
+    margin-top: 2px;
+
+    font-family: monospace;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #e1d9d9;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   FPS
+========================================================= */
+
+#fps-ui {
+    position: fixed;
+
+    top: 77px;
+    right: 20px;
+
+    z-index: 100;
+
+    padding: 3px 8px;
+
+    background:
+        rgba(5,5,6,.72);
+
+    border:
+        1px solid rgba(72,66,68,.65);
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.25);
+
+    pointer-events: none;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+#fps-text {
+    font-family: monospace;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    color: #706769;
+}
+
+
+/* =========================================================
+   PAUSE BUTTON
+========================================================= */
+
+#pause-button {
+    position: fixed;
+
+    top: 106px;
+    right: 20px;
+
+    z-index: 500;
+
+    min-width: 96px;
+
+    padding: 8px 13px;
+
+    border: 1px solid #4b4245;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(28,24,26,.96),
+            rgba(12,11,13,.96)
+        );
+
+    color: #b8aeaf;
+
+    font-family: "Sarabun", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.35);
+
+    transition:
+        transform .18s ease,
+        color .18s ease,
+        background .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+#pause-button::before {
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+    left: 15px;
+    right: 15px;
+
+    height: 1px;
+
+    background: #72252e;
+
+    opacity: .8;
+}
+
+
+#pause-button:hover {
+    transform: translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #291316,
+            #130d0f
+        );
+
+    border-color: #84333d;
+
+    color: #e0cfd0;
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.5),
+        0 0 15px rgba(122,35,47,.14);
+}
+
+
+#pause-button:active {
+    transform: translateY(0);
+
+    box-shadow:
+        0 3px 9px rgba(0,0,0,.5);
+}
+
+
+#pause-button.paused {
+    background:
+        linear-gradient(
+            135deg,
+            #321417,
+            #170b0d
+        );
+
+    border-color: #8b3741;
+
+    color: #d8898d;
+
+    box-shadow:
+        0 0 18px rgba(130,35,45,.14);
+}
+
+
+/* =========================================================
+   EXP HUD
+========================================================= */
+
+#exp-ui {
+    position: fixed;
+
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+
+    z-index: 100;
+
+    pointer-events: none;
+
+    animation: hudAppear .7s .1s ease both;
+}
+
+
+.bottom-hud {
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 14px;
+
+    width: min(540px, 100%);
+}
+
+
+/* =========================================================
+   LEVEL BOX
+========================================================= */
+
+.level-block {
+    position: relative;
+
+    width: 70px;
+
+    padding: 10px 5px 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,22,24,.94),
+            rgba(10,9,11,.94)
+        );
+
+    border:
+        1px solid rgba(78,69,71,.8);
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.35);
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+.level-block::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12px;
+    right: 12px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #8b2b35,
+            transparent
+        );
+}
+
+
+.level-block::after {
+    content: "";
+
+    position: absolute;
+
+    right: -10px;
+    bottom: -10px;
+
+    width: 30px;
+    height: 30px;
+
+    border:
+        1px solid rgba(122,37,47,.2);
+
+    transform: rotate(45deg);
+}
+
+
+.level-decoration {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-bottom: 6px;
+}
+
+
+.level-decoration span {
+    width: 12px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #64595b
+        );
+}
+
+
+.level-decoration span:last-child {
+    background:
+        linear-gradient(
+            90deg,
+            #64595b,
+            transparent
+        );
+}
+
+
+.level-decoration i {
+    width: 6px;
+    height: 6px;
+
+    display: block;
+
+    background:
+        linear-gradient(
+            135deg,
+            #a6323d,
+            #641a22
+        );
+
+    transform: rotate(45deg);
+
+    box-shadow:
+        0 0 7px rgba(145,39,52,.45);
+}
+
+
+.level-text {
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    color: #d5cdcd;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,.05);
+}
+
+
+/* =========================================================
+   EXP BAR
+========================================================= */
+
+.exp-block {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.exp-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 5px;
+
+    padding: 0 2px;
+}
+
+
+.exp-title,
+.exp-percent {
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    color: #786f71;
+}
+
+
+.exp-percent {
+    color: #8e7e80;
+}
+
+
+.exp-frame {
+    position: relative;
+
+    height: 9px;
+
+    padding: 1px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #080708,
+            #151214
+        );
+
+    border:
+        1px solid #494042;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,.8),
+        0 5px 14px rgba(0,0,0,.25);
+
+    overflow: hidden;
+}
+
+
+.exp-frame::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 39px,
+            rgba(255,255,255,.035) 40px
+        );
+
+    pointer-events: none;
+}
+
+
+.exp-bar {
+    position: relative;
+
+    height: 100%;
+
+    min-width: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5a1820,
+            #812731 55%,
+            #a33842
+        );
+
+    overflow: hidden;
+
+    transition:
+        width .15s linear;
+
+    box-shadow:
+        0 0 8px rgba(130,35,46,.3);
+}
+
+
+.exp-bar::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    width: 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.18)
+        );
+
+    filter: blur(2px);
+}
+
+
+.exp-highlight {
+    position: absolute;
+
+    top: 1px;
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        rgba(255,255,255,.25);
+}
+
+
+/* =========================================================
+   GAME ALERT OVERLAY
+========================================================= */
+
+#game-alert {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(37,25,28,.58),
+            rgba(3,3,4,.91) 72%
+        );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+#game-alert.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.game-alert-box {
+    position: relative;
+
+    width: min(410px, calc(100vw - 40px));
+
+    padding: 38px 30px 29px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(34,30,32,.98),
+            rgba(12,11,13,.99)
+        );
+
+    border:
+        1px solid rgba(94,83,86,.9);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.78),
+        0 0 0 1px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.035);
+
+    text-align: center;
+
+    transform:
+        translateY(10px)
+        scale(.98);
+
+    transition:
+        transform .3s ease;
+}
+
+
+#game-alert.show .game-alert-box {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   ALERT DECORATION
+========================================================= */
+
+.game-alert-line {
+    position: absolute;
+
+    top: -1px;
+    left: 15%;
+    right: 15%;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #9b2d39 20%,
+            #c04450 50%,
+            #9b2d39 80%,
+            transparent
+        );
+
+    box-shadow:
+        0 0 14px rgba(164,42,55,.4);
+}
+
+
+.game-alert-box::before,
+.game-alert-box::after {
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    border-color: #8c2934;
+
+    border-style: solid;
+}
+
+
+.game-alert-box::before {
+    top: 11px;
+    left: 11px;
+
+    border-width: 1px 0 0 1px;
+}
+
+
+.game-alert-box::after {
+    right: 11px;
+    bottom: 11px;
+
+    border-width: 0 1px 1px 0;
+}
+
+
+.game-alert-title {
+    color: #eee5e5;
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+
+    text-shadow:
+        0 0 20px rgba(255,255,255,.08);
+}
+
+
+.game-alert-divider {
+    position: relative;
+
+    width: 80px;
+    height: 1px;
+
+    margin: 15px auto 19px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #9b2d39,
+            transparent
+        );
+}
+
+
+.game-alert-divider::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 5px;
+    height: 5px;
+
+    background: #a93642;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(45deg);
+
+    box-shadow:
+        0 0 7px rgba(169,54,66,.6);
+}
+
+
+.game-alert-message {
+    max-width: 310px;
+
+    margin: 0 auto 27px;
+
+    color: #aaa0a1;
+
+    font-size: 14px;
+
+    line-height: 1.9;
+}
+
+
+/* =========================================================
+   ALERT BUTTON
+========================================================= */
+
+.game-alert-button {
+    position: relative;
+
+    min-width: 155px;
+
+    padding: 10px 26px;
+
+    border:
+        1px solid #82323c;
+
+    background:
+        linear-gradient(
+            135deg,
+            #351519,
+            #1a0d10
+        );
+
+    color: #ded2d3;
+
+    font-family: "Sarabun", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.4),
+        inset 0 1px rgba(255,255,255,.04);
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.game-alert-button::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.08),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left .55s ease;
+}
+
+
+.game-alert-button:hover {
+    transform: translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #481b21,
+            #220f12
+        );
+
+    border-color: #a23f4b;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.5),
+        0 0 16px rgba(130,40,53,.18);
+}
+
+
+.game-alert-button:hover::before {
+    left: 130%;
+}
+
+
+.game-alert-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   GAME OVER
+========================================================= */
+
+#game-alert.death {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(65,12,16,.25),
+            rgba(4,3,4,.94) 72%
+        );
+}
+
+
+#game-alert.death .game-alert-box {
+    border-color:
+        rgba(125,48,54,.85);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.85),
+        0 0 35px rgba(120,30,40,.08);
+}
+
+
+#game-alert.death .game-alert-line {
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #a52c31,
+            #d64a4f,
+            #a52c31,
+            transparent
+        );
+
+    box-shadow:
+        0 0 16px rgba(180,35,45,.4);
+}
+
+
+#game-alert.death .game-alert-title {
+    color: #d8787b;
+
+    text-shadow:
+        0 0 18px rgba(180,50,55,.16);
+}
+
+
+#game-alert.death .game-alert-divider {
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #a52c31,
+            transparent
+        );
+}
+
+
+#game-alert.death .game-alert-button {
+    border-color: #91343a;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b1115,
+            #19090b
+        );
+}
+
+
+#game-alert.death .game-alert-button:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #54171b,
+            #220b0e
+        );
+
+    border-color: #b7444b;
+}
+
+
+/* =========================================================
+   ORIENTATION WARNING
+========================================================= */
+
+#orientation-warning {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 20000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #171114,
+            #060607 75%
+        );
+
+    text-align: center;
+}
+
+
+.warning-content {
+    position: relative;
+
+    width: min(400px, 100%);
+
+    padding: 30px 20px;
+}
+
+
+.warning-small {
+    margin-top: 22px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: #756b6d;
+}
+
+
+.warning-content h2 {
+    margin-top: 11px;
+
+    font-size: 23px;
+
+    font-weight: 800;
+
+    color: #dcd4d4;
+}
+
+
+.warning-content p {
+    margin-top: 9px;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #817879;
+}
+
+
+.rotate-device {
+    margin-top: 22px;
+
+    font-family: monospace;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: #96313b;
+}
+
+
+/* =========================================================
+   WARNING PHONE
+========================================================= */
+
+.warning-symbol {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 65px;
+}
+
+
+.warning-phone {
+    position: relative;
+
+    width: 31px;
+    height: 52px;
+
+    border:
+        2px solid #88313a;
+
+    border-radius: 5px;
+
+    transform: rotate(90deg);
+
+    box-shadow:
+        0 0 14px rgba(135,45,57,.15);
+}
+
+
+.warning-phone::before {
+    content: "";
+
+    position: absolute;
+
+    top: 3px;
+    left: 50%;
+
+    width: 9px;
+    height: 2px;
+
+    transform:
+        translateX(-50%);
+
+    background: #88313a;
+
+    border-radius: 2px;
+}
+
+
+.warning-phone::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 3px;
+    left: 50%;
+
+    width: 4px;
+    height: 4px;
+
+    transform:
+        translateX(-50%);
+
+    border:
+        1px solid #88313a;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   WARNING LINES
+========================================================= */
+
+.warning-decoration {
+    position: absolute;
+
+    left: 12%;
+    right: 12%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #342a2d 20%,
+            #4b3034 50%,
+            #342a2d 80%,
+            transparent
+        );
+}
+
+
+.warning-decoration.top {
+    top: 23%;
+}
+
+
+.warning-decoration.bottom {
+    bottom: 23%;
+}
+
+
+/* =========================================================
+   LANDSCAPE WARNING
+========================================================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+    #orientation-warning {
+        display: flex;
+    }
+
+    #gameCanvas,
+    .top-hud,
+    #fps-ui,
+    #pause-button,
+    #exp-ui,
+    #game-alert {
+        display: none !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .top-hud {
+        top: 11px;
+
+        left: 11px;
+        right: 11px;
+    }
+
+
+    .game-name {
+        gap: 9px;
+
+        padding-right: 8px;
+    }
+
+
+    .game-name-line {
+        width: 2px;
+
+        height: 38px;
+    }
+
+
+    .game-name-main {
+        font-size: 19px;
+
+        letter-spacing: 3.5px;
+    }
+
+
+    .game-name-sub {
+        margin-top: 5px;
+
+        font-size: 7px;
+
+        letter-spacing: 3.5px;
+    }
+
+
+    .score-hud {
+        min-width: 83px;
+
+        padding: 6px 9px 7px;
+    }
+
+
+    .score-title {
+        font-size: 7px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .score-value {
+        font-size: 15px;
+    }
+
+
+    #fps-ui {
+        top: 58px;
+
+        right: 11px;
+
+        padding: 2px 6px;
+    }
+
+
+    #fps-text {
+        font-size: 7px;
+    }
+
+
+    #pause-button {
+        top: 81px;
+
+        right: 11px;
+
+        min-width: 82px;
+
+        padding: 7px 9px;
+
+        font-size: 10px;
+    }
+
+
+    #exp-ui {
+        left: 11px;
+
+        right: 11px;
+
+        bottom: 11px;
+    }
+
+
+    .bottom-hud {
+        gap: 9px;
+
+        width: min(500px, 100%);
+    }
+
+
+    .level-block {
+        width: 59px;
+
+        padding: 8px 4px;
+    }
+
+
+    .level-decoration {
+        margin-bottom: 5px;
+    }
+
+
+    .level-decoration span {
+        width: 9px;
+    }
+
+
+    .level-decoration i {
+        width: 5px;
+        height: 5px;
+    }
+
+
+    .level-text {
+        font-size: 13px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .exp-top {
+        margin-bottom: 4px;
+    }
+
+
+    .exp-title,
+    .exp-percent {
+        font-size: 7px;
+
+        letter-spacing: 1.2px;
+    }
+
+
+    .exp-frame {
+        height: 8px;
+    }
+
+
+    .game-alert-box {
+        width: calc(100vw - 34px);
+
+        padding:
+            30px
+            19px
+            23px;
+    }
+
+
+    .game-alert-title {
+        font-size: 20px;
+
+        letter-spacing: 3px;
+    }
+
+
+    .game-alert-divider {
+        width: 65px;
+
+        margin-top: 13px;
+        margin-bottom: 16px;
+    }
+
+
+    .game-alert-message {
+        font-size: 13px;
+
+        line-height: 1.8;
+
+        margin-bottom: 23px;
+    }
+
+
+    .game-alert-button {
+        min-width: 140px;
+
+        padding: 9px 20px;
+
+        font-size: 13px;
+    }
+
+
+    .warning-small {
+        font-size: 8px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .warning-content h2 {
+        font-size: 20px;
+    }
+
+
+    .warning-content p {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .game-name-main {
+        font-size: 17px;
+
+        letter-spacing: 3px;
+    }
+
+
+    .game-name-sub {
+        font-size: 6px;
+
+        letter-spacing: 3px;
+    }
+
+
+    .score-hud {
+        min-width: 76px;
+    }
+
+
+    .score-value {
+        font-size: 14px;
+    }
+
+
+    #pause-button {
+        top: 78px;
+
+        min-width: 76px;
+
+        font-size: 9px;
+    }
+
+
+    .level-block {
+        width: 53px;
+    }
+
+
+    .level-text {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes hudAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: .01ms !important;
+
+        scroll-behavior: auto !important;
+
+    }
+
+}
