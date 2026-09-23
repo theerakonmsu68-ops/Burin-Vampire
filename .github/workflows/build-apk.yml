@@ -63,7 +63,7 @@ jobs:
 
 
       # ==========================================
-      # 6. Add Android
+      # 6. Add Android platform
       # ==========================================
       - name: Add Android platform
         run: |
@@ -79,19 +79,28 @@ jobs:
 
 
       # ==========================================
-      # 8. Generate Android icons
+      # 8. Prepare App Icon
+      # ==========================================
+      - name: Prepare App Icon
+        run: |
+          mkdir -p assets
+          cp images/icon.png assets/icon.png
+
+          echo "===== APP ICON ====="
+          ls -lh assets/icon.png
+          echo "==================="
+
+
+      # ==========================================
+      # 9. Generate Android icons
       # ==========================================
       - name: Generate Android icons
         run: |
-          if [ -d "assets" ]; then
-            npx capacitor-assets generate --android
-          else
-            echo "No assets folder found - skipping icon generation"
-          fi
+          npx capacitor-assets generate --android
 
 
       # ==========================================
-      # 9. Sync Capacitor
+      # 10. Sync Capacitor
       # ==========================================
       - name: Sync Capacitor
         run: |
@@ -99,7 +108,7 @@ jobs:
 
 
       # ==========================================
-      # 10. Setup Java
+      # 11. Setup Java
       # ==========================================
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -109,7 +118,7 @@ jobs:
 
 
       # ==========================================
-      # 11. Setup Android SDK
+      # 12. Setup Android SDK
       # ==========================================
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
@@ -118,7 +127,7 @@ jobs:
 
 
       # ==========================================
-      # 12. Build Debug APK
+      # 13. Build Debug APK
       # ==========================================
       - name: Build Debug APK
         working-directory: android
@@ -128,7 +137,7 @@ jobs:
 
 
       # ==========================================
-      # 13. Upload APK
+      # 14. Upload APK
       # ==========================================
       - name: Upload APK
         uses: actions/upload-artifact@v4
