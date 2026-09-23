@@ -1,6 +1,6 @@
 {
   "appId": "com.burin.vampire",
   "appName": "Burin Vampire",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }
