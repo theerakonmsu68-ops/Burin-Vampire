@@ -13,46 +13,121 @@ jobs:
 
     steps:
 
+      # ==========================================
+      # 1. Download source code
+      # ==========================================
       - name: Checkout
         uses: actions/checkout@v4
 
+
+      # ==========================================
+      # 2. Setup Node.js
+      # ==========================================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+
+      # ==========================================
+      # 3. Install npm dependencies
+      # ==========================================
       - name: Install dependencies
         run: npm install
 
+
+      # ==========================================
+      # 4. Install Capacitor
+      # ==========================================
       - name: Install Capacitor
-        run: npm install @capacitor/cli @capacitor/core @capacitor/android
+        run: |
+          npm install @capacitor/cli@7 @capacitor/core@7 @capacitor/android@7
 
+
+      # ==========================================
+      # 5. Prepare web files
+      # ==========================================
+      - name: Prepare web files
+        run: |
+          rm -rf www
+          mkdir -p www
+
+          cp index.html www/
+          cp -r css www/
+          cp -r js www/
+          cp -r images www/
+
+          echo "===== WWW CONTENTS ====="
+          find www -maxdepth 2 -type f
+          echo "========================"
+
+
+      # ==========================================
+      # 6. Add Android platform
+      # ==========================================
       - name: Add Android platform
-        run: npx cap add android
+        run: |
+          npx cap add android
 
+
+      # ==========================================
+      # 7. Generate Android icons
+      # ==========================================
+      - name: Install Capacitor Assets
+        run: |
+          npm install @capacitor/assets@latest --save-dev
+
+
+      # ==========================================
+      # 8. Generate icons
+      # ==========================================
       - name: Generate Android icons
         run: |
-          npm install @capacitor/assets --save-dev
-          npx capacitor-assets generate --android
+          if [ -d "assets" ]; then
+            npx capacitor-assets generate --android
+          else
+            echo "No assets folder found - skipping icon generation"
+          fi
 
-      - name: Sync web files
-        run: npx cap sync android
 
+      # ==========================================
+      # 9. Sync Capacitor
+      # ==========================================
+      - name: Sync Capacitor
+        run: |
+          npx cap sync android
+
+
+      # ==========================================
+      # 10. Setup Java
+      # ==========================================
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
+
+      # ==========================================
+      # 11. Setup Android SDK
+      # ==========================================
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+
+      # ==========================================
+      # 12. Build Debug APK
+      # ==========================================
       - name: Build Debug APK
         working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
 
+
+      # ==========================================
+      # 13. Upload APK
+      # ==========================================
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
